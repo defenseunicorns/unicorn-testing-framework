@@ -6,11 +6,10 @@ This is an example zarf package that will deploy the podinfo helm chart and test
 
 From this directory
 1. (optional) deploy a k3d cluster: `./k3d_cluster.sh create`
-2. init zarf: `zarf init ./zarf-init-<architecture>-<version matching whatever zarf version>.tar.zst`
+2. init zarf: `zarf init ./zarf-init-<architecture>-<version matching whatever zarf version>.tar.zst --confirm`
 3. If not using the k3d cluster config under k3d.yaml, confirm environment variables under [terratest/terratest.env](terratest/terratest.env)
-   1. These defaults work for the k3d cluster deployed above
 4. zarf package create: `zarf package create --confirm`
-5. zarf package deploy zarf-package-podinfo-arm64.tar.zst --components podinfo-test  
+5. zarf package deploy: `zarf package deploy zarf-package-podinfo-<architecture>.tar.zst --components podinfo-test --confirm`
 
 On successful completion you should see similar output:
 
@@ -32,6 +31,6 @@ On successful completion you should see similar output:
      TestKubernetesIngressCheck 2023-02-16T12:08:40-08:00 http_helper.go:59: Making an HTTP GET call to URL http://localhost:8080                                
      --- PASS: TestKubernetesIngressCheck (0.02s)                                                                                                                
      PASS                                                                                                                                                        
-  ✔  Completed command "set -a; source ./terratest.env; echo $K8S_SERVICE_NAME; ...."                                                                            
+  ✔  Completed command "set -a; source ./terratest.env; ...."                                                                            
   ✔  Zarf deployment complete
 ```

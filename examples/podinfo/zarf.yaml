@@ -16,6 +16,8 @@ components:
         namespace: testing
         valuesFiles:
           - "values.yaml"
+    images:
+      - ghcr.io/stefanprodan/podinfo:6.3.3
   - name: podinfo-test
     actions:
       onDeploy:
