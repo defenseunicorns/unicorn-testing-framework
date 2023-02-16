@@ -1,6 +1,8 @@
 package utf
 
 import (
+	"fmt"
+	"os"
 	"testing"
 
 	teststructure "github.com/gruntwork-io/terratest/modules/test-structure"
@@ -29,4 +31,14 @@ func Teardown(t *testing.T, platform interface{}) {
 			require.Fail(t, "Unknown platform type")
 		}
 	})
+}
+
+// GetEnvVar gets an environment variable, returning an error if it isn't found.
+func GetEnvVar(varName string) (string, error) {
+	val, present := os.LookupEnv(varName)
+	if !present {
+		return "", fmt.Errorf("expected env var %v not set", varName)
+	}
+
+	return val, nil
 }
