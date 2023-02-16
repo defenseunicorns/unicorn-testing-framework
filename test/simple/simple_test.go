@@ -46,6 +46,5 @@ func TestSimple(t *testing.T) {
 		// Ensure we have the git repo cloned
 		output, err = platform.RunSSHCommand(t, `cd /root/app && bash -c 'if git remote -v | grep -q "git@github.com:defenseunicorns/unicorn-testing-framework.git"; then exit 0; else exit 1; fi'`, true)
 		require.NoError(t, err, output)
-`)
 	})
 }
