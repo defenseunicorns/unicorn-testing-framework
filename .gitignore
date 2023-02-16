@@ -68,3 +68,7 @@ backend.*
 
 # Ignore Terratest test data
 .test-data
+
+# Ignore examples binaries/packages
+examples/dos-games/dos-games-test
+examples/**/*.tar.zst
