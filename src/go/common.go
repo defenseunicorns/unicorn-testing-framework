@@ -8,25 +8,25 @@ import (
 )
 
 // Setup sets up the environment where the deployment will happen.
-func Setup(t *testing.T, options interface{}) {
+func Setup(t *testing.T, platform interface{}) {
 	teststructure.RunTestStage(t, "SETUP", func() {
-		switch options := options.(type) {
-		case EC2Options:
-			setupEC2(t, options)
+		switch platform := platform.(type) {
+		case EC2Platform:
+			setupEC2(t, platform)
 		default:
-			require.Fail(t, "Unknown options type")
+			require.Fail(t, "Unknown platform type")
 		}
 	})
 }
 
 // Teardown the deployment environment
-func Teardown(t *testing.T, options interface{}) {
+func Teardown(t *testing.T, platform interface{}) {
 	teststructure.RunTestStage(t, "TEARDOWN", func() {
-		switch options := options.(type) {
-		case EC2Options:
-			teardownEC2(t, options)
+		switch platform := platform.(type) {
+		case EC2Platform:
+			teardownEC2(t, platform)
 		default:
-			require.Fail(t, "Unknown options type")
+			require.Fail(t, "Unknown platform type")
 		}
 	})
 }
