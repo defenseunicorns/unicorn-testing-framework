@@ -6,4 +6,4 @@ set -Eeuxo pipefail
 echo "Running setup script..."
 apt update && apt install -y jq git make wget
 rm -rf /root/app
-git clone --depth 1 "{{.gitRepoURL}}" --branch "{{.gitBranch}}" ~/app
+git clone --depth 1 "{{.gitRepoURL}}" --branch "{{.gitBranch}}" /root/app
