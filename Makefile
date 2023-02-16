@@ -2,6 +2,26 @@
 BUILD_HARNESS_REPO := ghcr.io/defenseunicorns/not-a-build-harness/not-a-build-harness
 BUILD_HARNESS_VERSION := 0.0.4
 
+# The version of Zarf to use. To keep this repo as portable as possible the Zarf binary will be downloaded and added to
+# the build folder.
+ZARF_VERSION := v0.24.2
+
+# Figure out which Zarf binary we should use based on the operating system we are on
+ZARF_BIN := zarf
+UNAME_S := $(shell uname -s)
+UNAME_P := $(shell uname -p)
+ifneq ($(UNAME_S),Linux)
+	ifeq ($(UNAME_S),Darwin)
+		ZARF_BIN := $(addsuffix -mac,$(ZARF_BIN))
+	endif
+	ifeq ($(UNAME_P),i386)
+		ZARF_BIN := $(addsuffix -intel,$(ZARF_BIN))
+	endif
+	ifeq ($(UNAME_P),arm64)
+		ZARF_BIN := $(addsuffix -apple,$(ZARF_BIN))
+	endif
+endif
+
 .DEFAULT_GOAL := help
 
 # Optionally add the "-it" flag for docker run commands if the env var "CI" is not set (meaning we are on a local machine and not in github actions)
@@ -49,3 +69,22 @@ run-pre-commit-hooks: ## Run all pre-commit hooks. Returns nonzero exit code if 
 .PHONY: fix-cache-permissions
 fix-cache-permissions: ## Fixes the permissions on the pre-commit cache
 	@docker run --rm -v "${PWD}:/app" --workdir "/app" -e "PRE_COMMIT_HOME=/app/.cache/pre-commit" $(BUILD_HARNESS_REPO):$(BUILD_HARNESS_VERSION) chmod -R a+rx .cache
+
+build:
+	@mkdir -p build
+
+build/zarf: | build ## Download the Linux flavor of Zarf to the build dir
+	@echo "Downloading zarf"
+	@curl -sL https://github.com/defenseunicorns/zarf/releases/download/$(ZARF_VERSION)/zarf_$(ZARF_VERSION)_Linux_amd64 -o build/zarf
+	@chmod +x build/zarf
+
+build/zarf-mac-intel: | build ## Download the Mac (Intel) flavor of Zarf to the build dir
+	@echo "Downloading zarf-mac-intel"
+	@curl -sL https://github.com/defenseunicorns/zarf/releases/download/$(ZARF_VERSION)/zarf_$(ZARF_VERSION)_Darwin_amd64 -o build/zarf-mac-intel
+	@chmod +x build/zarf-mac-intel
+
+build/zarf-init.sha256: | build ## Download the init package and create a small file with the sha256sum of the package so the Makefile can check whether it needs to be updated
+	@echo "Downloading zarf-init-amd64-$(ZARF_VERSION).tar.zst"
+	@curl -sL https://github.com/defenseunicorns/zarf/releases/download/$(ZARF_VERSION)/zarf-init-amd64-$(ZARF_VERSION).tar.zst -o build/zarf-init-amd64-$(ZARF_VERSION).tar.zst
+	@echo "Creating shasum of the init package"
+	@shasum -a 256 build/zarf-init-amd64-$(ZARF_VERSION).tar.zst | awk '{print $$1}' > build/zarf-init.sha256

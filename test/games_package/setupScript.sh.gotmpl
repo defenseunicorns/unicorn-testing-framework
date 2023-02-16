@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuxo pipefail
+
+echo "Running setup script..."
+
+# Install some needed packages
+apt update && apt install -y jq git make wget
+
+# Clone the repo
+rm -rf /root/app
+git clone --depth 1 "{{.gitRepoURL}}" --branch "{{.gitBranch}}" /root/app
+
+# Install ASDF
+git clone --branch v0.11.1 --depth 1 https://github.com/asdf-vm/asdf.git "/root/.asdf"
+echo -e '\nsource $HOME/.asdf/asdf.sh' >> "/root/.bashrc"
+echo -e '\nsource $HOME/.asdf/asdf.sh' >> "/root/.profile"
+source "$/root/.asdf/asdf.sh"
+export PATH="/root/.asdf/shims:/root/.asdf/bin:$PATH"
+
+# Install Go
+asdf plugin add golang
+cd /root/app
+asdf install golang
+
+# Download Zarf and Zarf init package
+mkdir -p /root/.zarf && echo "no_progress = true" | tee ~/.zarf/zarf-config.toml
+cd /root/app
+make build/zarf build/zarf-init.sha256
+
+# Build games package
+cd /root/app/examples/dos-games
+go test -c -o ./dos-games-test
+/root/app/build/zarf package create --confirm
