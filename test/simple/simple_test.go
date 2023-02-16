@@ -2,6 +2,7 @@ package simple
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"testing"
 	"text/template"
@@ -44,7 +45,7 @@ func TestSimple(t *testing.T) {
 		require.NoError(t, err, output)
 
 		// Ensure we have the git repo cloned
-		output, err = platform.RunSSHCommand(t, `cd /root/app && bash -c 'if git remote -v | grep -q "git@github.com:defenseunicorns/unicorn-testing-framework.git"; then exit 0; else exit 1; fi'`, true)
+		output, err = platform.RunSSHCommand(t, fmt.Sprintf(`cd /root/app && bash -c '"'"'if git remote -v | grep -q "%s"; then exit 0; else exit 1; fi'"'"'`, gitRepoURL), true)
 		require.NoError(t, err, output)
 	})
 }
