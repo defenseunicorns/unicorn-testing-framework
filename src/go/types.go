@@ -21,6 +21,6 @@ func NewEC2Platform(t *testing.T, instanceName string, region string, instanceTy
 		InstanceType: instanceType,
 		SetupScript:  setupScript,
 	}
-	platform.TestFolder = teststructure.CopyTerraformFolderToTemp(t, "..", "src/tf/public-ec2-instance")
+	platform.TestFolder = teststructure.CopyTerraformFolderToTemp(t, "../..", "src/tf/public-ec2-instance")
 	return platform
 }

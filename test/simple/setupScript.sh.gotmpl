@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuxo pipefail
+
+echo "Running setup script..."
+apt update && apt install -y jq git make wget
+rm -rf /root/app
+git clone --depth 1 "{{.gitRepoURL}}" --branch "{{.gitBranch}}" /root/app
