@@ -16,7 +16,7 @@ git clone --depth 1 "{{.gitRepoURL}}" --branch "{{.gitBranch}}" /root/app
 git clone --branch v0.11.1 --depth 1 https://github.com/asdf-vm/asdf.git "/root/.asdf"
 echo -e '\nsource $HOME/.asdf/asdf.sh' >> "/root/.bashrc"
 echo -e '\nsource $HOME/.asdf/asdf.sh' >> "/root/.profile"
-source "$/root/.asdf/asdf.sh"
+source "/root/.asdf/asdf.sh"
 export PATH="/root/.asdf/shims:/root/.asdf/bin:$PATH"
 
 # Install Go
