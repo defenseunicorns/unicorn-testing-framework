@@ -15,7 +15,7 @@ func TestSimple(t *testing.T) {
 	// ### SETUP CODE THAT MUST BE AT THE BEGINNING OF EVERY TEST ###
 	t.Parallel()
 
-	setupScript, err := os.ReadFile("setupScript.sh")
+	setupScript, err := os.ReadFile("setupScript.sh.gotmpl")
 	require.NoError(t, err)
 
 	// If you need variables in the setup script, you can use this to get them
