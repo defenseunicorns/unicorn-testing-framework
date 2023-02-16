@@ -16,6 +16,7 @@ components:
       - defenseunicorns/zarf-game:multi-tile-dark
 
   - name: dos-games-test
+    required: false
     files:
       - source: dos-games-test
         target: dos-games-test
