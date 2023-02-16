@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	customteststructure "github.com/defenseunicorns/unicorn-testing-framework/src/go/terratest/teststructure"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -31,7 +32,7 @@ func setupEC2(t *testing.T, platform EC2Platform) {
 		},
 	})
 	teststructure.SaveTerraformOptions(t, terraformOptions.TerraformDir, terraformOptions)
-	teststructure.SaveEc2KeyPair(t, terraformOptions.TerraformDir, keyPair)
+	customteststructure.SaveEc2KeyPair(t, terraformOptions.TerraformDir, keyPair)
 	terraform.InitAndApply(t, terraformOptions)
 	err = waitForInstanceReady(t, platform, 5*time.Second, 15) //nolint:gomnd
 	require.NoError(t, err)
