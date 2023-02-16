@@ -37,7 +37,7 @@ func setupEC2(t *testing.T, platform EC2Platform) {
 	require.NoError(t, err)
 	err = copyFileToInstanceE(t, platform, 0777, "/home/ubuntu/setupScript.sh", platform.SetupScript)
 	require.NoError(t, err)
-	output, err := platform.RunSSHCommandWithOptionalSudo(t, `/home/ubuntu/setupScript.sh`, true)
+	output, err := platform.RunSSHCommand(t, `/home/ubuntu/setupScript.sh`, true)
 	require.NoError(t, err, output)
 }
 
@@ -48,8 +48,8 @@ func teardownEC2(t *testing.T, platform EC2Platform) {
 	aws.DeleteEC2KeyPair(t, keyPair)
 }
 
-// RunSSHCommandWithOptionalSudo runs the given command on the given host via SSH, and return the stdout and stderr as a string.
-func (platform EC2Platform) RunSSHCommandWithOptionalSudo(t *testing.T, command string, asSudo bool) (string, error) {
+// RunSSHCommand runs the given command on the given host via SSH, and return the stdout and stderr as a string.
+func (platform EC2Platform) RunSSHCommand(t *testing.T, command string, asSudo bool) (string, error) {
 	precommand := "bash -c"
 	if asSudo {
 		precommand = fmt.Sprintf(`sudo %v`, precommand)
@@ -91,7 +91,7 @@ func (platform EC2Platform) RunSSHCommandWithOptionalSudo(t *testing.T, command 
 func waitForInstanceReady(t *testing.T, platform EC2Platform, timeBetweenRetries time.Duration, maxRetries int) error {
 	t.Helper()
 	_, err := retry.DoWithRetryE(t, "Wait for the instance to be ready", maxRetries, timeBetweenRetries, func() (string, error) {
-		_, err := platform.RunSSHCommandWithOptionalSudo(t, "whoami", true)
+		_, err := platform.RunSSHCommand(t, "whoami", true)
 		if err != nil {
 			return "", fmt.Errorf("unknown error: %w", err)
 		}

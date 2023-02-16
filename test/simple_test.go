@@ -22,7 +22,7 @@ func TestSimple(t *testing.T) {
 	// We now have a running EC2 instance with the setup script run on it. We can now run tests to validate that our deployment that we ran in the setup script has resulted in the outcomes that we expect.
 	teststructure.RunTestStage(t, "TEST", func() {
 		// Wait up to 30 seconds for google.com to be reachable (should happen immediately for google, but is a good example for testing an actual endpoint in a new cluster)
-		output, err := platform.RunSSHCommandWithOptionalSudo(t, `timeout 30 bash -c "while ! curl -L -s --fail --show-error https://google.com > /dev/null; do sleep 5; done"`, false)
+		output, err := platform.RunSSHCommand(t, `timeout 30 bash -c "while ! curl -L -s --fail --show-error https://google.com > /dev/null; do sleep 5; done"`, false)
 		require.NoError(t, err, output)
 	})
 }
