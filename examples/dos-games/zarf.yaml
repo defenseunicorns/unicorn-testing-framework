@@ -17,13 +17,13 @@ components:
 
   - name: dos-games-test
     files:
-      - source: dos-games-test
-        target: dos-games-test
+      - source: dos-games.test
+        target: dos-games.test
         executable: true
     actions:
       onDeploy:
         after:
-          - cmd: ./dos-games-test -test.v
+          - cmd: ./dos-games.test -test.v
       onCreate:
         before:
-          - cmd: go test -c -o dos-games-test
+          - cmd: go test -c -o dos-games.test
