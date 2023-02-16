@@ -25,11 +25,11 @@ help: ## Show a list of all targets
 	| column -t -s ":"
 
 .PHONY: test
-test: ## Run all automated tests. Requires access to an AWS account. Costs real money. Requires env vars GIT_REPO_URL, GIT_BRANCH, and AWS cred env vars
+test: ## Run all automated tests. Requires access to an AWS account. Costs real money. Requires env vars REPO_URL, GIT_BRANCH, and AWS cred env vars
 	mkdir -p .cache/go
 	mkdir -p .cache/go-build
 	echo "Running automated tests. This will take several minutes. At times it does not log anything to the console. If you interrupt the test run you will need to log into AWS console and manually delete any orphaned infrastructure."
-	docker run $(TTY_ARG) --rm -v "${PWD}:/app" -v "${PWD}/.cache/go:/root/go" -v "${PWD}/.cache/go-build:/root/.cache/go-build" --workdir "/app" -e GOPATH=/root/go -e GOCACHE=/root/.cache/go-build -e GIT_REPO_URL -e GIT_BRANCH -e AWS_REGION -e AWS_DEFAULT_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -e AWS_SECURITY_TOKEN -e AWS_SESSION_EXPIRATION -e SKIP_SETUP -e SKIP_TEST -e SKIP_TEARDOWN $(BUILD_HARNESS_REPO):$(BUILD_HARNESS_VERSION) /bin/bash -c 'asdf install && go test -v -timeout 2h -p 1 ./test/...'
+	docker run $(TTY_ARG) --rm -v "${PWD}:/app" -v "${PWD}/.cache/go:/root/go" -v "${PWD}/.cache/go-build:/root/.cache/go-build" --workdir "/app" -e GOPATH=/root/go -e GOCACHE=/root/.cache/go-build -e REPO_URL -e GIT_BRANCH -e AWS_REGION -e AWS_DEFAULT_REGION -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -e AWS_SECURITY_TOKEN -e AWS_SESSION_EXPIRATION -e SKIP_SETUP -e SKIP_TEST -e SKIP_TEARDOWN $(BUILD_HARNESS_REPO):$(BUILD_HARNESS_VERSION) /bin/bash -c 'asdf install && go test -v -timeout 2h -p 1 ./test/...'
 
 .PHONY: docker-save-build-harness
 docker-save-build-harness: ## Pulls the build harness docker image and saves it to a tarball

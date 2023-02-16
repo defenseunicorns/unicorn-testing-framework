@@ -20,7 +20,7 @@ func TestSimple(t *testing.T) {
 	require.NoError(t, err)
 
 	// If you need variables in the setup script, you can use this to get them
-	gitRepoURL, err := utf.GetEnvVar("GIT_REPO_URL")
+	gitRepoURL, err := utf.GetEnvVar("REPO_URL")
 	require.NoError(t, err)
 	gitBranch, err := utf.GetEnvVar("GIT_BRANCH")
 	require.NoError(t, err)
