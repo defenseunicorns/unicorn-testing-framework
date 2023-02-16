@@ -1,0 +1,10 @@
+ui:
+  color: "#c6a6d1"
+  message: "you did it! 🦄 🌈 🎉"
+ingress:
+  enabled: true
+  hosts:
+    - host: ""
+      paths:
+        - path: /
+          pathType: Prefix

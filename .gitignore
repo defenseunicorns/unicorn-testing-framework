@@ -69,3 +69,5 @@ backend.*
 # Ignore examples binaries/packages
 examples/dos-games/dos-games-test
 examples/**/*.tar.zst
+.vscode
+**/*.gotest
