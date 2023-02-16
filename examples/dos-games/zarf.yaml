@@ -14,6 +14,8 @@ components:
           - manifests/service.yaml
     images:
       - defenseunicorns/zarf-game:multi-tile-dark
+
+  - name: dos-games-test
     files:
       - source: dos-games-test
         target: dos-games-test
@@ -22,3 +24,6 @@ components:
       onDeploy:
         after:
           - cmd: ./dos-games-test -test.v
+      onCreate:
+        before:
+          - cmd: go test -c -o dos-games-test
