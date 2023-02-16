@@ -32,7 +32,7 @@ func TestSimple(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	platform := utf.NewEC2Platform(t, "andy-and-kiran-funtimes", "us-east-1", "t2.micro", setupScriptBuffer.String())
+	platform := utf.NewEC2Platform(t, "andy-and-kiran-funtimes", "us-east-1", "m5a.large", setupScriptBuffer.String())
 	defer utf.Teardown(t, platform)
 	utf.Setup(t, platform)
 	// ### END SETUP CODE ###

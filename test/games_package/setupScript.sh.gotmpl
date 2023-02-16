@@ -6,7 +6,7 @@ set -Eeuxo pipefail
 echo "Running setup script..."
 
 # Install some needed packages
-apt update && apt install -y jq git make wget
+apt update && apt install -y jq git make wget build-essential
 
 # Clone the repo
 rm -rf /root/app
@@ -29,7 +29,10 @@ mkdir -p /root/.zarf && echo "no_progress = true" | tee ~/.zarf/zarf-config.toml
 cd /root/app
 make build/zarf build/zarf-init.sha256
 
-# Build games package
-cd /root/app/examples/dos-games
-go test -c -o ./dos-games-test
-/root/app/build/zarf package create --confirm
+## Zarf init
+#/root/app/build/zarf init --components k3s --confirm
+#
+## Build games package
+#cd /root/app/examples/dos-games
+#/root/app/build/zarf package create --confirm
+#/root/app/build/zarf package deploy zarf-package-dos-games-amd64.tar.zst
