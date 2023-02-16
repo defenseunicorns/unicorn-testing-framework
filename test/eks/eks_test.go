@@ -11,6 +11,7 @@ import (
 
 func TestEKS(t *testing.T) {
 	t.Parallel()
+
 	platform := utf.NewEKSPlatform(t, "kiran", "us-east-1")
 	defer utf.Teardown(t, platform)
 	utf.Setup(t, platform)

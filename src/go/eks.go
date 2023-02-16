@@ -14,15 +14,13 @@ func setupEKS(t *testing.T, platform EKSPlatform) {
 
 	clusterName := fmt.Sprintf("%s-%s", platform.InstanceName, random.UniqueId())
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		// The path to where our Terraform code is located
 		TerraformDir: platform.TestFolder,
-
-		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
 			"instance_name": clusterName,
 			"region":        platform.Region,
 		},
 	})
+	teststructure.SaveTerraformOptions(t, terraformOptions.TerraformDir, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
 }
 
