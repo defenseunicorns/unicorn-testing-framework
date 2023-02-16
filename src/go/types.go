@@ -6,7 +6,7 @@ import (
 	teststructure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
-type EC2Options struct {
+type EC2Platform struct {
 	InstanceName string
 	Region       string
 	InstanceType string
@@ -14,13 +14,13 @@ type EC2Options struct {
 	SetupScript  string
 }
 
-func NewEC2Options(t *testing.T, instanceName string, region string, instanceType string, setupScript string) EC2Options {
-	options := EC2Options{
+func NewEC2Platform(t *testing.T, instanceName string, region string, instanceType string, setupScript string) EC2Platform {
+	platform := EC2Platform{
 		InstanceName: instanceName,
 		Region:       region,
 		InstanceType: instanceType,
 		SetupScript:  setupScript,
 	}
-	options.TestFolder = teststructure.CopyTerraformFolderToTemp(t, "..", "src/tf/public-ec2-instance")
-	return options
+	platform.TestFolder = teststructure.CopyTerraformFolderToTemp(t, "..", "src/tf/public-ec2-instance")
+	return platform
 }
