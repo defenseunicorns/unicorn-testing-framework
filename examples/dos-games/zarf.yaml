@@ -1,0 +1,24 @@
+kind: ZarfPackageConfig
+metadata:
+  name: dos-games
+  description: "Simple example to load classic DOS games into K8s in the airgap"
+
+components:
+  - name: baseline
+    required: true
+    manifests:
+      - name: multi-games
+        namespace: zarf
+        files:
+          - manifests/deployment.yaml
+          - manifests/service.yaml
+    images:
+      - defenseunicorns/zarf-game:multi-tile-dark
+    files:
+      - source: dos-games-test
+        target: dos-games-test
+        executable: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./dos-games-test -test.v
