@@ -20,6 +20,8 @@ func Setup(t *testing.T, platform interface{}) {
 		switch platform := platform.(type) {
 		case EC2Platform:
 			setupEC2(t, platform)
+		case EKSPlatform:
+			setupEKS(t, platform)
 		default:
 			require.Fail(t, "Unknown platform type")
 		}
@@ -32,6 +34,8 @@ func Teardown(t *testing.T, platform interface{}) {
 		switch platform := platform.(type) {
 		case EC2Platform:
 			teardownEC2(t, platform)
+		case EKSPlatform:
+			teardownEKS(t, platform)
 		default:
 			require.Fail(t, "Unknown platform type")
 		}
