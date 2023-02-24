@@ -1,0 +1,35 @@
+#pre-req: existing k3d cluster, see ./k3d.yaml
+#Deploy podinfo + ingress, check for ingress using terratest
+
+kind: ZarfPackageConfig
+metadata:
+  name: podinfo
+  description: "Simple example deploying podinfo and testing the deployment success"
+components:
+  - name: podinfo-deploy
+    required: true
+    charts:
+      - name: podinfo
+        releaseName: podinfo-testing
+        url: https://stefanprodan.github.io/podinfo
+        version: 6.3.3
+        namespace: testing
+        valuesFiles:
+          - "values.yaml"
+    images:
+      - ghcr.io/stefanprodan/podinfo:6.3.3
+  - name: podinfo-test
+    actions:
+      onDeploy:
+        after:
+          - cmd: set -a; source ./terratest.env; ./podinfo_resources_test.gotest -test.v; set +a
+      onCreate:
+        before:
+          - cmd: go test ./terratest -c -o ./terratest/podinfo_resources_test.gotest
+    files:
+      - source: ./terratest/podinfo_resources_test.gotest
+        target: podinfo_resources_test.gotest
+        executable: true
+      - source: ./terratest/terratest.env
+        target: terratest.env
+        executable: true
