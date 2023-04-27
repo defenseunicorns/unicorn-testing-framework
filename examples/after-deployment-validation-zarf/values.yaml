@@ -1,6 +1,10 @@
-#this will force failure to test stuff
-# resources:
-#   limits:
-#   requests:
-#     cpu: 1m
-#     memory: 256Gi
+ui:
+  color: "#c6a6d1"
+  message: "you did it! 🦄 🌈 🎉"
+ingress:
+  enabled: true
+  hosts:
+    - host: ""
+      paths:
+        - path: /
+          pathType: Prefix

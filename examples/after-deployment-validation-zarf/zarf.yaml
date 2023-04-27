@@ -13,16 +13,22 @@ components:
           wait:
             cluster:
               kind: pod
-              name: app.kubernetes.io/name=podinfo 
+              name: app.kubernetes.io/name=podinfo
               namespace: podinfo
               condition: ready
+        - maxTotalSeconds: 20
+          wait:
+            network:
+              protocol: http
+              address: localhost:8080
+              code: 200
   charts:
   - name: podinfo
     releaseName: podinfo
     url: https://stefanprodan.github.io/podinfo
-    version: 6.1.6
+    version: 6.3.3
     namespace: podinfo
     valuesFiles:
       - values.yaml
   images:
-  - ghcr.io/stefanprodan/podinfo:6.1.6
+  - ghcr.io/stefanprodan/podinfo:6.3.3
