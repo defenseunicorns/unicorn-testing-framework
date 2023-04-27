@@ -12,7 +12,7 @@ components:
         - wait:
             cluster:
               kind: pod
-              identifier: podinfo
+              name: app.kubernetes.io/name=podinfo 
               namespace: podinfo
               condition: ready
   charts:
