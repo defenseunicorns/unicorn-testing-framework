@@ -9,7 +9,8 @@ components:
   actions:
     onDeploy:
       after:
-        - wait:
+        - maxTotalSeconds: 20
+          wait:
             cluster:
               kind: pod
               name: app.kubernetes.io/name=podinfo 

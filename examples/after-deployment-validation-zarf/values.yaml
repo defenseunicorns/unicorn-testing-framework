@@ -1,5 +1,6 @@
-resources:
-  limits:
-  requests:
-    cpu: 1m
-    memory: 256Gi
+#this will force failure to test stuff
+# resources:
+#   limits:
+#   requests:
+#     cpu: 1m
+#     memory: 256Gi
