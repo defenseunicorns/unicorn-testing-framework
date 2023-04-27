@@ -1,0 +1,27 @@
+kind: ZarfPackageConfig
+metadata:
+  name: after-deployment-validation
+  description: Example of Zarf validating deployment using component actions
+  version: v1.0.0
+components:
+- name: after-deployment-validation
+  required: true
+  actions:
+    onDeploy:
+      after:
+        - wait:
+            cluster:
+              kind: pod
+              identifier: podinfo
+              namespace: podinfo
+              condition: ready
+  charts:
+  - name: podinfo
+    releaseName: podinfo
+    url: https://stefanprodan.github.io/podinfo
+    version: 6.1.6
+    namespace: podinfo
+    valuesFiles:
+      - values.yaml
+  images:
+  - ghcr.io/stefanprodan/podinfo:6.1.6
