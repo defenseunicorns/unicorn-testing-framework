@@ -1,0 +1,43 @@
+name: Package and Test
+run-name: ${{github.actor}} is running the package workflow
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'examples/after-deployment-validation-zarf/**'
+  push:
+    branches: [main]
+    paths:
+      - 'examples/after-deployment-validation-zarf/**'
+concurrency:
+  group: ${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+env:
+  BRANCH_NAME: "${{ github.head_ref || github.ref_name }}"
+  TAG: "${{ github.sha }}"
+jobs:
+  ##########
+  # Zarf package build
+  ##########
+  package-podinfo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@main
+        with:
+          version: v0.26.1
+
+      - name: Create Zarf Package
+        run: |
+          # build the zarf package
+          zarf package create \
+            --confirm \
+            --skip-sbom \
+            --no-local-images
