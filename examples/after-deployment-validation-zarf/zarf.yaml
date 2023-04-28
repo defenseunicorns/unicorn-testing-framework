@@ -3,7 +3,7 @@ metadata:
   name: after-deployment-validation
   description: Example of Zarf validating deployment using component actions
   version: v1.0.0
-variables: 
+variables:
   - name: DOMAIN
     description: "address to test"
     default: "localhost"
