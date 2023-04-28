@@ -1,4 +1,5 @@
-while [[ $(kubectl get pods -n podinfo -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do
-  echo "waiting for pod" && sleep 1
-done
+#!/usr/bin/env bash
+
+#eqivilent to: zarf tools wait-for pod app.kubernetes.io/name=podinfo ready -n podinfo
+kubectl wait --for=condition=Ready pod -l app.kubernetes.io/name=podinfo -n podinfo --timeout=300s
 kubectl get all -n podinfo

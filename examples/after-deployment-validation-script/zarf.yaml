@@ -3,7 +3,6 @@ metadata:
   name: after-deployment-validation
   description: Example of Zarf validating deployment using component actions
   version: v1.0.0
-  architecture: arm64
 components:
 - name: after-deployment-validation
   required: true
