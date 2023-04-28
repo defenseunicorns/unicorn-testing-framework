@@ -27,7 +27,7 @@ jobs:
   # Zarf package build
   ##########
   package-podinfo:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
 
@@ -49,7 +49,6 @@ jobs:
         working-directory: utils/k3d
         run: |
           wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-          k3d --version
           ./k3d_cluster.sh create
 
       - name: Zarf Init
