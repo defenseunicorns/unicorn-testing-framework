@@ -48,8 +48,8 @@ jobs:
       - name: Create k3d Cluster
         working-directory: utils/k3d
         run: |
-          wget -q -O install.sh - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh
-          cat install.sh
+          wget -q -O install.sh - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.9 bash
+          k3d version
           ./k3d_cluster.sh create
 
       - name: Zarf Init
