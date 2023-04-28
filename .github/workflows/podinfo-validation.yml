@@ -5,10 +5,12 @@ on:
     types: [opened, synchronize]
     paths:
       - 'examples/after-deployment-validation-zarf/**'
+      - 'utils/k3d/**'
   push:
     branches: [main]
     paths:
       - 'examples/after-deployment-validation-zarf/**'
+      - 'utils/k3d/**'
 concurrency:
   group: ${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
@@ -41,3 +43,19 @@ jobs:
           zarf package create \
             --confirm \
             --skip-sbom
+
+      - name: Create k3d Cluster
+        working-directory: utils/k3d
+        run: |
+          curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+          k3d --version
+          ./k3d_cluster.sh create
+
+      - name: Zarf Init
+        run: zarf init --confirm
+
+      - name: Deploy Podinfo
+        run: zarf package deploy zarf-package-after-deployment-validation-amd64.tar.gz --confirm
+
+      - name: List installed packages
+        run: zarf package list
