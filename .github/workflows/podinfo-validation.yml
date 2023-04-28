@@ -47,7 +47,9 @@ jobs:
       - name: Create k3d Cluster
         run: |
           cd utils/k3d
-          curl https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+          wget https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh
+          bash -x install.sh
+          rm -f install.sh
           k3d --version
           ./k3d_cluster.sh create
 
