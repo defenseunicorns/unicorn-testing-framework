@@ -22,7 +22,6 @@ defaults:
 env:
   BRANCH_NAME: "${{ github.head_ref || github.ref_name }}"
   SHA: "${{ github.sha }}"
-  K3D_TAG: "v5.4.9"
 jobs:
   ##########
   # Zarf package build
@@ -49,7 +48,7 @@ jobs:
       - name: Create k3d Cluster
         working-directory: utils/k3d
         run: |
-          wget -q -O install.sh - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=${ env.K3D_TAG } bash
+          wget -q -O install.sh - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.9 bash
           k3d version
           ./k3d_cluster.sh create
 
