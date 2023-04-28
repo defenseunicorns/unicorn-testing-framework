@@ -37,6 +37,13 @@ jobs:
           version: v0.26.0
           download-init-package: true
 
+      - name: Create k3d Cluster
+        working-directory: utils/k3d
+        run: |
+          curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.9 bash -x
+          k3d --version
+          ./k3d_cluster.sh create
+
       - name: Create Zarf Package
         working-directory: examples/after-deployment-validation-zarf
         run: |
@@ -45,15 +52,8 @@ jobs:
             --confirm \
             --skip-sbom
 
-      - name: Create k3d Cluster
-        working-directory: utils/k3d
-        run: |
-          curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.9 bash
-          k3d version
-          ./k3d_cluster.sh create
-
       - name: Zarf Init
-        run: zarf init --confirm
+        run: zarf init --confirm -l debug
 
       - name: Deploy Podinfo
         working-directory: examples/after-deployment-validation-zarf
@@ -61,3 +61,5 @@ jobs:
 
       - name: List installed packages
         run: zarf package list
+
+# do other stuff, push to registry
