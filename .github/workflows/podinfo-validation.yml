@@ -34,7 +34,8 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
-          version: v0.26.1
+          version: v0.24.3
+          download-init-package: true
 
       - name: Create Zarf Package
         working-directory: examples/after-deployment-validation-zarf
@@ -45,9 +46,9 @@ jobs:
             --skip-sbom
 
       - name: Create k3d Cluster
+        working-directory: utils/k3d
         run: |
-          cd utils/k3d
-          curl https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+          curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
           k3d --version
           ./k3d_cluster.sh create
 
