@@ -55,7 +55,7 @@ jobs:
           ./k3d_cluster.sh create
 
       - name: Zarf Init
-        run: zarf init --confirm
+        run: zarf init --confirm -l debug
 
       - name: Deploy Podinfo
         run: zarf package deploy zarf-package-after-deployment-validation-amd64-v1.0.0.tar.zst --confirm
