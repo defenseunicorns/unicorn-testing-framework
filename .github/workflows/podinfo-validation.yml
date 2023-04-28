@@ -58,7 +58,7 @@ jobs:
         run: zarf init --confirm
 
       - name: Deploy Podinfo
-        run: zarf package deploy zarf-package-after-deployment-validation-amd64.tar.zst --confirm
+        run: zarf package deploy zarf-package-after-deployment-validation-arm64-v1.0.0.tar.zst --confirm
 
       - name: List installed packages
         run: zarf package list
