@@ -21,7 +21,8 @@ defaults:
     shell: bash
 env:
   BRANCH_NAME: "${{ github.head_ref || github.ref_name }}"
-  TAG: "${{ github.sha }}"
+  SHA: "${{ github.sha }}"
+  K3D_TAG: "v5.4.9"
 jobs:
   ##########
   # Zarf package build
@@ -34,7 +35,7 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
-          version: v0.24.3
+          version: v0.26.1
           download-init-package: true
 
       - name: Create Zarf Package
@@ -48,7 +49,7 @@ jobs:
       - name: Create k3d Cluster
         working-directory: utils/k3d
         run: |
-          wget -q -O install.sh - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.9 bash
+          wget -q -O install.sh - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=${ env.K3D_TAG } bash
           k3d version
           ./k3d_cluster.sh create
 
