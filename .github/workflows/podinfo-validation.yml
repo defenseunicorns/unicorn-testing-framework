@@ -40,5 +40,4 @@ jobs:
           # build the zarf package
           zarf package create \
             --confirm \
-            --skip-sbom \
-            --no-local-images
+            --skip-sbom
