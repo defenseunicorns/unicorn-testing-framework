@@ -45,10 +45,9 @@ jobs:
             --skip-sbom
 
       - name: Create k3d Cluster
-        working-directory: utils/k3d
         run: |
-          set -x; curl https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-          set +x
+          cd utils/k3d
+          curl https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
           k3d --version
           ./k3d_cluster.sh create
 
