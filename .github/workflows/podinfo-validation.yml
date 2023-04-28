@@ -35,6 +35,7 @@ jobs:
         uses: defenseunicorns/setup-zarf@main
         with:
           version: v0.26.1
+          download-init-package: true
 
       - name: Create Zarf Package
         working-directory: examples/after-deployment-validation-zarf
