@@ -11,11 +11,11 @@ import (
 	"github.com/gruntwork-io/terratest/modules/k8s"
 )
 
-// An example of how to do more expanded verification of the Kubernetes resource config in examples/kubernetes-basic-example using Terratest.
+// Check the ingress of the application
 func TestKubernetesIngressCheck(t *testing.T) {
 	t.Parallel()
 
-	//get environment variable for kubenetes namespace
+	//get environment variable for kubenetes namespace and service
 	namespace := os.Getenv("K8S_NAMESPACE")
 	servicename := os.Getenv("K8S_SERVICE_NAME")
 	hostnameandport := os.Getenv("K8S_HOSTNAME_PORT")

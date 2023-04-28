@@ -19,6 +19,7 @@ components:
     images:
       - ghcr.io/stefanprodan/podinfo:6.3.3
   - name: podinfo-test
+    required: false
     actions:
       onDeploy:
         after:

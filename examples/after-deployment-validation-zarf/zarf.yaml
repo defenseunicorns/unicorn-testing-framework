@@ -1,0 +1,43 @@
+kind: ZarfPackageConfig
+metadata:
+  name: after-deployment-validation
+  description: Example of Zarf validating deployment using component actions
+  version: v1.0.0
+variables:
+  - name: DOMAIN
+    description: "address to test"
+    default: "localhost"
+    prompt: false
+  - name: PORT
+    description: "port to test"
+    default: "8080"
+    prompt: false
+components:
+- name: after-deployment-validation
+  required: true
+  actions:
+    onDeploy:
+      after:
+        - maxTotalSeconds: 20
+          wait:
+            cluster:
+              kind: pod
+              name: app.kubernetes.io/name=podinfo
+              namespace: podinfo
+              condition: ready
+        - maxTotalSeconds: 20
+          wait:
+            network:
+              protocol: http
+              address: "${ZARF_VAR_DOMAIN}:${ZARF_VAR_PORT}"
+              code: 200
+  charts:
+  - name: podinfo
+    releaseName: podinfo
+    url: https://stefanprodan.github.io/podinfo
+    version: 6.3.3
+    namespace: podinfo
+    valuesFiles:
+      - values.yaml
+  images:
+  - ghcr.io/stefanprodan/podinfo:6.3.3

@@ -1,0 +1,65 @@
+name: Package and Test
+run-name: ${{github.actor}} is running the package workflow
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'examples/after-deployment-validation-zarf/**'
+      - 'utils/k3d/**'
+  push:
+    branches: [main]
+    paths:
+      - 'examples/after-deployment-validation-zarf/**'
+      - 'utils/k3d/**'
+concurrency:
+  group: ${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+env:
+  BRANCH_NAME: "${{ github.head_ref || github.ref_name }}"
+  SHA: "${{ github.sha }}"
+jobs:
+  ##########
+  # Build Podinfo
+  ##########
+  package-podinfo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@main
+        with:
+          version: v0.26.0
+          download-init-package: true
+
+      - name: Create k3d Cluster
+        working-directory: utils/k3d
+        run: |
+          curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.9 bash -x
+          k3d --version
+          ./k3d_cluster.sh create
+
+      - name: Create Zarf Package
+        working-directory: examples/after-deployment-validation-zarf
+        run: |
+          # build the zarf package
+          zarf package create \
+            --confirm \
+            --skip-sbom
+
+      - name: Zarf Init
+        run: zarf init --confirm -l debug
+
+      - name: Deploy Podinfo
+        working-directory: examples/after-deployment-validation-zarf
+        run: zarf package deploy zarf-package-after-deployment-validation-amd64-v1.0.0.tar.zst --confirm
+
+      - name: List installed packages
+        run: zarf package list
+
+# do other stuff, push to registry
