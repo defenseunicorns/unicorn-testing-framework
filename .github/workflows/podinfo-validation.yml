@@ -24,7 +24,7 @@ env:
   SHA: "${{ github.sha }}"
 jobs:
   ##########
-  # Zarf package build
+  # Build Podinfo
   ##########
   package-podinfo:
     runs-on: ubuntu-latest
