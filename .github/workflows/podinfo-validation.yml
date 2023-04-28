@@ -34,7 +34,7 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
-          version: v0.26.1
+          version: v0.26.0
           download-init-package: true
 
       - name: Create Zarf Package
@@ -56,6 +56,7 @@ jobs:
         run: zarf init --confirm
 
       - name: Deploy Podinfo
+        working-directory: examples/after-deployment-validation-zarf
         run: zarf package deploy zarf-package-after-deployment-validation-amd64-v1.0.0.tar.zst --confirm
 
       - name: List installed packages
