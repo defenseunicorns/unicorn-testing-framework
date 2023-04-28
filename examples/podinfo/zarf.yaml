@@ -4,7 +4,7 @@
 kind: ZarfPackageConfig
 metadata:
   name: podinfo
-  description: "Simple example deploying podinfo and testing the deployment success"
+  description: Simple example deploying podinfo and testing the deployment success
 components:
   - name: podinfo-deploy
     required: true
@@ -15,18 +15,22 @@ components:
         version: 6.3.3
         namespace: testing
         valuesFiles:
-          - "values.yaml"
+          - values.yaml
     images:
       - ghcr.io/stefanprodan/podinfo:6.3.3
   - name: podinfo-test
     required: false
     actions:
-      onDeploy:
-        after:
-          - cmd: set -a; source ./terratest.env; ./podinfo_resources_test.gotest -test.v; set +a
       onCreate:
         before:
           - cmd: go test ./terratest -c -o ./terratest/podinfo_resources_test.gotest
+      onDeploy:
+        after:
+          - cmd: |
+              set -a
+              source ./terratest.env
+              ./podinfo_resources_test.gotest -test.v
+              set +a
     files:
       - source: ./terratest/podinfo_resources_test.gotest
         target: podinfo_resources_test.gotest
