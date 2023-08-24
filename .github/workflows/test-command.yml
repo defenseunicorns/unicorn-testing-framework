@@ -142,7 +142,7 @@ jobs:
           make docker-load-build-harness
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::810783286427:role/github-runner-role
           role-session-name: ${{ github.event.client_payload.pull_request.head.sha || github.sha }}
